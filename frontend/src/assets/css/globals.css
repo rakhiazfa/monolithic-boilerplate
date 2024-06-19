@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+	body {
+		@apply text-sm font-normal antialiased;
+	}
+
+	button, a {
+		@apply transition-all duration-200;
+	}
+
+	button, input, select, textarea {
+		@apply outline-none;
+	}
+
+	a {
+		@apply text-sm text-blue-500 hover:underline;
+	}
+}
+
+@layer components {
+	.app-container {
+		@apply w-full md:max-w-[1024px] lg:max-w-[1240px] mx-auto px-5 md:px-[3.25rem];
+	}
+}
