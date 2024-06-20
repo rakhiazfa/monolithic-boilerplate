@@ -27,6 +27,7 @@ class AuthController extends Controller
                 name: 'refresh_token',
                 value: $tokens['refresh_token'],
                 httpOnly: true,
+                minutes: 20160
             )
         );
     }
@@ -59,7 +60,7 @@ class AuthController extends Controller
         ]);
     }
 
-    public function refresh()
+    public function token()
     {
         return response()->json([
             'access_token' => auth()->refresh(),
