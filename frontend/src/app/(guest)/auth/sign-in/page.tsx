@@ -7,6 +7,8 @@ import { AppDispatch } from '@/store';
 import { Button } from '@nextui-org/button';
 import { Input } from '@nextui-org/input';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -16,6 +18,7 @@ export default function SignIn() {
 
     const { errors, loading } = useSelector(authSelector);
     const dispatch = useDispatch<AppDispatch>();
+    const router = useRouter();
 
     const onSubmit = (payload: SignInPayload) => {
         dispatch(signin(payload))
@@ -24,9 +27,15 @@ export default function SignIn() {
                 reset();
                 dispatch(resetErrors());
 
-                console.log('Successfully logged in.');
+                router.push('/dashboard');
             });
     };
+
+    useEffect(() => {
+        return () => {
+            dispatch(resetErrors());
+        };
+    }, []);
 
     return (
         <main>

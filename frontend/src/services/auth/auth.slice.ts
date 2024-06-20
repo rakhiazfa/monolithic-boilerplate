@@ -1,6 +1,7 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import Cookies from 'js-cookie';
 import { AuthErrors, AuthState } from './auth.types';
-import { signin, signup } from './auth.actions';
+import { fetchAuthUser, signin, signout, signup } from './auth.actions';
 import { AppState } from '@/store';
 
 const initialState = (): AuthState => ({
@@ -31,6 +32,8 @@ const authSlice = createSlice({
         });
         builder.addCase(signin.fulfilled, (state, { payload }) => {
             state.loading = false;
+
+            Cookies.set('access_token', payload.access_token);
         });
 
         builder.addCase(signup.pending, (state) => {
@@ -42,6 +45,23 @@ const authSlice = createSlice({
         });
         builder.addCase(signup.fulfilled, (state, { payload }) => {
             state.loading = false;
+        });
+
+        builder.addCase(signout.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(signout.rejected, (state, { payload }) => {
+            state.loading = false;
+        });
+        builder.addCase(signout.fulfilled, (state, { payload }) => {
+            state.loading = false;
+            state.user = null;
+
+            Cookies.remove('access_token');
+        });
+
+        builder.addCase(fetchAuthUser.fulfilled, (state, { payload }) => {
+            state.user = payload.user;
         });
     }
 });

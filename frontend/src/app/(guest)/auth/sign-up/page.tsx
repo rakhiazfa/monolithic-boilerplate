@@ -8,6 +8,7 @@ import { Button } from '@nextui-org/button';
 import { Input } from '@nextui-org/input';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -17,7 +18,6 @@ export default function SignUp() {
 
     const { errors, loading } = useSelector(authSelector);
     const dispatch = useDispatch<AppDispatch>();
-
     const router = useRouter();
 
     const onSubmit = (payload: SignUpPayload) => {
@@ -30,6 +30,12 @@ export default function SignUp() {
                 router.push('/auth/sign-in');
             });
     };
+
+    useEffect(() => {
+        return () => {
+            dispatch(resetErrors());
+        };
+    }, []);
 
     return (
         <main>

@@ -27,11 +27,23 @@ export const signup = createAsyncThunk('auth/signup', async (payload: SignUpPayl
     }
 });
 
-export const signout = createAsyncThunk('auth/signout', async (payload: unknown, { rejectWithValue, dispatch }) => {
+export const signout = createAsyncThunk('auth/signout', async (_, { rejectWithValue, dispatch }) => {
     try {
         dispatch(resetErrors());
 
         const data = await AuthService.signout();
+
+        return data;
+    } catch (error: any) {
+        return rejectWithValue(error?.response?.data?.errors);
+    }
+});
+
+export const fetchAuthUser = createAsyncThunk('auth/user', async (_, { rejectWithValue, dispatch }) => {
+    try {
+        dispatch(resetErrors());
+
+        const data = await AuthService.fetchAuthUser();
 
         return data;
     } catch (error: any) {
