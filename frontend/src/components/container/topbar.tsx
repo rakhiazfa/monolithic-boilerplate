@@ -23,10 +23,10 @@ const Topbar = () => {
     };
 
     return (
-        <header className="relative w-full h-[70px] flex items-center bg-blue-500 border-b">
+        <header className="relative w-full h-[70px] flex items-center bg-white border-b">
             <div className="app-container flex justify-between items-center">
                 <div>
-                    <Link href="/dashboard" className="text-xl text-white font-semibold tracking-wide hover:no-underline">
+                    <Link href="/dashboard" className="text-xl text-black font-semibold tracking-wide hover:no-underline">
                         Monolithic Boilerplate
                     </Link>
                 </div>
