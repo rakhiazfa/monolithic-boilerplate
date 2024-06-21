@@ -50,6 +50,7 @@ export default function SignUp() {
                             {...register('name')}
                             isInvalid={!!errors?.name}
                             errorMessage={errors?.name}
+                            autoFocus
                         />
                         <Input
                             type="text"

@@ -50,6 +50,7 @@ export default function SignIn() {
                             {...register('email')}
                             isInvalid={!!errors?.email}
                             errorMessage={errors?.email}
+                            autoFocus
                         />
                         <Input
                             type="password"
