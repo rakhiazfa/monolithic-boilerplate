@@ -35,7 +35,7 @@ export const signout = createAsyncThunk('auth/signout', async (_, { rejectWithVa
 
         return data;
     } catch (error: any) {
-        return rejectWithValue(error?.response?.data?.errors);
+        return rejectWithValue(error);
     }
 });
 
@@ -47,6 +47,18 @@ export const fetchAuthUser = createAsyncThunk('auth/user', async (_, { rejectWit
 
         return data;
     } catch (error: any) {
-        return rejectWithValue(error?.response?.data?.errors);
+        return rejectWithValue(error);
+    }
+});
+
+export const fetchAuthUserMenus = createAsyncThunk('auth/user/menus', async (_, { rejectWithValue, dispatch }) => {
+    try {
+        dispatch(resetErrors());
+
+        const data = await AuthService.fetchAuthUserMenus();
+
+        return data;
+    } catch (error: any) {
+        return rejectWithValue(error);
     }
 });

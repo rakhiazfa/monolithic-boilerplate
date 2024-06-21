@@ -25,4 +25,10 @@ export default class AuthService {
 
         return data;
     }
+
+    static async fetchAuthUserMenus() {
+        const { data } = await api.get(`/auth/user/menus`);
+
+        return data;
+    }
 }

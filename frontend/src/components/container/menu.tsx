@@ -10,35 +10,35 @@ export type IMenu = {
 };
 
 type MenuProps = {
-    menu: IMenu[];
+    menus: IMenu[];
     menuTitle?: string;
     isSubMenu?: boolean;
 };
 
-const Menu = ({ menu, menuTitle, isSubMenu = false }: MenuProps) => {
+const Menu = ({ menus, menuTitle, isSubMenu = false }: MenuProps) => {
     return !isSubMenu ? (
-        <nav className="relative w-full h-[50px] flex items-center bg-blue-500 text-white">
+        <nav className="relative w-full h-[50px] flex items-center bg-blue-500 text-white shadow-md">
             <div className="app-container flex items-center gap-5">
-                {menu.map(({ name, href, children }, index) => (
+                {menus.map(({ name, href, children }, index) => (
                     <div key={index}>
                         {Array.isArray(children) && children.length > 0 ? (
                             <DropdownMenu.Root>
                                 <DropdownMenu.Trigger>
-                                    <button className="flex items-center gap-3">
+                                    <button className="flex items-center gap-3 font-medium tracking-wider">
                                         {name}
                                         <DropdownMenu.TriggerIcon />
                                     </button>
                                 </DropdownMenu.Trigger>
-                                <DropdownMenu.Content>
+                                <DropdownMenu.Content className="min-w-[175px]">
                                     {children.map(({ name, href, children }, index) => (
                                         <div key={index}>
                                             {Array.isArray(children) && children.length > 0 ? (
-                                                <Menu menu={children} menuTitle={name} isSubMenu={true} />
+                                                <Menu menus={children} menuTitle={name} isSubMenu={true} />
                                             ) : (
                                                 <DropdownMenu.Item>
                                                     <Link
                                                         href={href ?? '/'}
-                                                        className="flex items-center h-full text-inherit hover:no-underline"
+                                                        className="w-full h-full flex items-center text-inherit hover:no-underline"
                                                     >
                                                         {name}
                                                     </Link>
@@ -49,7 +49,7 @@ const Menu = ({ menu, menuTitle, isSubMenu = false }: MenuProps) => {
                                 </DropdownMenu.Content>
                             </DropdownMenu.Root>
                         ) : (
-                            <Link href={href ?? '/'} className="flex items-center h-full text-white hover:no-underline">
+                            <Link href={href ?? '/'} className="w-full h-full flex items-center text-white hover:no-underline">
                                 {name}
                             </Link>
                         )}
@@ -61,10 +61,10 @@ const Menu = ({ menu, menuTitle, isSubMenu = false }: MenuProps) => {
         <DropdownMenu.Sub>
             <DropdownMenu.SubTrigger>{menuTitle}</DropdownMenu.SubTrigger>
             <DropdownMenu.SubContent>
-                {menu.map(({ name, href, children }, index) => (
+                {menus.map(({ name, href, children }, index) => (
                     <div key={index}>
                         {Array.isArray(children) && children.length > 0 ? (
-                            <Menu menu={children} menuTitle={name} isSubMenu={true} />
+                            <Menu menus={children} menuTitle={name} isSubMenu={true} />
                         ) : (
                             <DropdownMenu.Item>
                                 <Link href={href ?? '/'} className="text-inherit hover:no-underline">
