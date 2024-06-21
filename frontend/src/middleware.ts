@@ -1,7 +1,5 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { jwtDecode } from 'jwt-decode';
-import api from './endpoints/api';
 
 const guestRoutes: string[] = ['/auth/sign-up', '/auth/sign-in'];
 const protectedRoutes: string[] = ['/dashboard'];
