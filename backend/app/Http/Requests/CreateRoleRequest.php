@@ -17,6 +17,8 @@ class CreateRoleRequest extends FormRequest
             'name' => ['required', 'unique:roles'],
             'permissions' => ['array'],
             'permissions.*' => ['required', 'numeric'],
+            'menus' => ['array'],
+            'menus.*' => ['required', 'numeric'],
         ];
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\MenuController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -15,6 +16,7 @@ Route::prefix('/auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
     Route::post('/token', [AuthController::class, 'token'])->name('auth.token');
     Route::middleware('auth')->get('/user', [AuthController::class, 'user'])->name('auth.user');
+    Route::middleware('auth')->get('/user/menus', [AuthController::class, 'userMenus'])->name('auth.user.menus');
 });
 
 Route::middleware(['auth', 'permission'])->group(function () {
@@ -38,6 +40,13 @@ Route::middleware(['auth', 'permission'])->group(function () {
     Route::apiResource('/users', UserController::class, [
         'parameters' => [
             'users' => 'id',
+        ],
+    ]);
+
+    Route::get('/menus/search', [MenuController::class, 'search'])->name('menus.search');
+    Route::apiResource('/menus', MenuController::class, [
+        'parameters' => [
+            'menus' => 'id',
         ],
     ]);
 });

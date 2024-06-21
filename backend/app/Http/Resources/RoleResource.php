@@ -8,6 +8,11 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class RoleResource extends JsonResource
 {
     /**
+     * @var string
+     */
+    public static $wrap = 'role';
+
+    /**
      * Transform the resource into an array.
      *
      * @return array<string, mixed>
@@ -20,6 +25,9 @@ class RoleResource extends JsonResource
             'guard_name' => $this->guard_name,
             'permissions' => $this->whenLoaded('permissions', function () {
                 return new PermissionCollection($this->permissions);
+            }),
+            'menus' => $this->whenLoaded('menus', function () {
+                return new MenuCollection($this->menus);
             }),
         ];
     }

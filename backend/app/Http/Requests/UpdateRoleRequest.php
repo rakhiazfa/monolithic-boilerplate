@@ -19,6 +19,8 @@ class UpdateRoleRequest extends FormRequest
             'name' => ['required', 'unique:roles,name,' . $roleId],
             'permissions' => ['array'],
             'permissions.*' => ['required', 'numeric'],
+            'menus' => ['array'],
+            'menus.*' => ['required', 'numeric'],
         ];
     }
 }

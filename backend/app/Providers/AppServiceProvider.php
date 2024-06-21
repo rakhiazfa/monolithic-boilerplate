@@ -2,8 +2,12 @@
 
 namespace App\Providers;
 
+use App\Services\MenuService;
 use App\Services\RoleService;
 use App\Services\UserService;
+use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -15,6 +19,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->singleton(RoleService::class);
         $this->app->singleton(UserService::class);
+        $this->app->singleton(MenuService::class);
     }
 
     /**
@@ -22,6 +27,16 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        JsonResource::withoutWrapping();
+
+        DB::listen(function ($query) {
+            Log::channel('database')->info(
+                $query->sql,
+                [
+                    'bindings' => $query->bindings,
+                    'time' => $query->time
+                ]
+            );
+        });
     }
 }

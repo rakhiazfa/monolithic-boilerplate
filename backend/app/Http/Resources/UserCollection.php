@@ -8,6 +8,11 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 class UserCollection extends ResourceCollection
 {
     /**
+     * @var string
+     */
+    public static $wrap = 'users';
+
+    /**
      * Transform the resource collection into an array.
      *
      * @return array<int|string, mixed>

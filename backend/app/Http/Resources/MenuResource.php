@@ -5,12 +5,12 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserResource extends JsonResource
+class MenuResource extends JsonResource
 {
     /**
      * @var string
      */
-    public static $wrap = 'user';
+    public static $wrap = 'menu';
 
     /**
      * Transform the resource into an array.
@@ -22,10 +22,11 @@ class UserResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'email' => $this->email,
-            'email_verified_at' => $this->email_verified_at,
-            'roles' => $this->whenLoaded('roles', function () {
-                return new RoleCollection($this->roles);
+            'href' => $this->href,
+            'order' => $this->order,
+            'parent_id' => $this->parent_id,
+            'children' => $this->whenLoaded('children', function () {
+                return $this->children;
             }),
         ];
     }

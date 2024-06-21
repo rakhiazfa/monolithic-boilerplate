@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Http\Resources\UserResource;
+use App\Models\Role;
 use App\Models\User;
+use App\Services\MenuService;
 use Illuminate\Support\Facades\Cookie;
 
 class AuthController extends Controller
@@ -55,8 +58,22 @@ class AuthController extends Controller
 
     public function user()
     {
+        $user = auth()->user();
+
+        return new UserResource($user);
+    }
+
+    public function userMenus(MenuService $menuService)
+    {
+        $user = auth()->user();
+        $user->load('roles.menus');
+
+        $menus = collect($user->roles)->map(function (Role $role) {
+            return $role->menus;
+        })->collapse();
+
         return response()->json([
-            'user' => auth()->user(),
+            'menus' => $menuService->formatMenus($menus),
         ]);
     }
 

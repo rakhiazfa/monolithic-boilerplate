@@ -4,9 +4,10 @@ namespace App\Services;
 
 use App\Http\Requests\CreateRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
+use App\Models\Role;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
-use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class RoleService
@@ -31,27 +32,39 @@ class RoleService
 
     public function create(CreateRoleRequest $request): Role
     {
-        $permissions = $request->input('permissions', []);
+        $role = DB::transaction(function () use ($request) {
+            $permissions = $request->input('permissions', []);
+            $menus = $request->input('menus', []);
 
-        $role = Role::create($request->all());
-        $role->permissions()->sync($permissions);
+            $role = Role::create($request->all());
+            $role->permissions()->sync($permissions);
+            $role->menus()->sync($menus);
+
+            return $role;
+        });
 
         return $role;
     }
 
     public function findById(string $id): Role
     {
-        $role = Role::with('permissions')->findOrFail($id);
+        $role = Role::with(['permissions', 'menus'])->findOrFail($id);
 
         return $role;
     }
 
     public function update(UpdateRoleRequest $request, string $id): bool
     {
-        $permissions = $request->input('permissions', []);
+        $role = DB::transaction(function () use ($request, $id) {
+            $permissions = $request->input('permissions', []);
+            $menus = $request->input('menus', []);
 
-        $role = $this->findById($id);
-        $role->permissions()->sync($permissions);
+            $role = $this->findById($id);
+            $role->permissions()->sync($permissions);
+            $role->menus()->sync($menus);
+
+            return $role;
+        });
 
         return $role->update($request->all());
     }
