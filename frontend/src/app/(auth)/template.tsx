@@ -1,44 +1,38 @@
 'use client';
 
-import Menu, { IMenu } from '@/components/container/menu';
+import Menu from '@/components/container/menu';
 import Topbar from '@/components/container/topbar';
 import Footer from '@/components/ui/footer';
 import { fetchAuthUser, fetchAuthUserMenus } from '@/services/auth/auth.actions';
+import { authSelector, setUserMenus } from '@/services/auth/auth.slice';
 import { AppDispatch } from '@/store';
-import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function Template({ children }: { children: React.ReactNode }) {
-    const [loading, setLoading] = useState<boolean>(true);
-    const [userMenus, setUserMenus] = useState<IMenu[]>([]);
+    const { user } = useSelector(authSelector);
     const dispatch = useDispatch<AppDispatch>();
 
     useEffect(() => {
-        dispatch(fetchAuthUser())
-            .unwrap()
-            .then(() => {
-                dispatch(fetchAuthUserMenus())
-                    .unwrap()
-                    .then((data) => {
-                        setUserMenus(data.menus);
-                    })
-                    .finally(() => {
-                        setLoading(false);
-                    });
-            })
-            .catch(() => {
-                setLoading(false);
-            });
+        if (!user) {
+            dispatch(fetchAuthUser())
+                .unwrap()
+                .then(() => {
+                    dispatch(fetchAuthUserMenus())
+                        .unwrap()
+                        .then((data) => {
+                            dispatch(setUserMenus(data.menus));
+                        });
+                });
+        }
     }, []);
 
-    return !loading ? (
+    return (
         <>
             <Topbar />
-            <Menu menus={userMenus} />
+            <Menu menus={user?.menus ?? []} />
             <div className="py-10">{children}</div>
             <Footer />
         </>
-    ) : (
-        <></>
     );
 }

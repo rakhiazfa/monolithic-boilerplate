@@ -1,3 +1,5 @@
+import { IMenu } from '@/components/container/menu';
+
 export type SignInPayload = {
     email: string;
     password: string;
@@ -15,6 +17,7 @@ export type User = {
     name: string;
     email: string;
     email_verified_at: Date;
+    menus?: IMenu[];
 };
 
 export type AuthErrors = {

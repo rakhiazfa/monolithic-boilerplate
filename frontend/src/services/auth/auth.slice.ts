@@ -3,6 +3,7 @@ import Cookies from 'js-cookie';
 import { AuthErrors, AuthState } from './auth.types';
 import { fetchAuthUser, signin, signout, signup } from './auth.actions';
 import { AppState } from '@/store';
+import { IMenu } from '@/components/container/menu';
 
 const initialState = (): AuthState => ({
     user: null,
@@ -14,6 +15,9 @@ const authSlice = createSlice({
     name: 'auth',
     initialState: initialState(),
     reducers: {
+        setUserMenus(state, { payload }: PayloadAction<IMenu[]>) {
+            state.user!.menus = payload;
+        },
         resetErrors(state, { payload }: PayloadAction<keyof AuthErrors | undefined>) {
             if (payload && state.errors) {
                 state.errors[payload] = undefined;
@@ -71,6 +75,6 @@ export const authSelector = createSelector(
     (state: AppState) => state.auth
 );
 
-export const { resetErrors } = authSlice.actions;
+export const { setUserMenus, resetErrors } = authSlice.actions;
 
 export default authSlice.reducer;
