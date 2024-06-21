@@ -57,7 +57,7 @@ class MenuService
         return $menu->delete();
     }
 
-    public function formatMenus(Collection $menus): Collection
+    public function formatMenus(Collection $menus): array
     {
         $menus = $menus->map(function (Menu $menu) {
             return [
@@ -73,7 +73,7 @@ class MenuService
         return $this->getChildren($menus, null);
     }
 
-    private function getChildren(Collection $menus, int|null $parentId): Collection
+    private function getChildren(Collection $menus, int|null $parentId): array
     {
         $rootMenus = $menus->where('parent_id', $parentId)->map(function (array $menu) use ($menus) {
             $menu['children'] = $this->getChildren($menus, $menu['id']);
@@ -81,6 +81,6 @@ class MenuService
             return $menu;
         });
 
-        return $rootMenus;
+        return $rootMenus->values()->toArray();
     }
 }
