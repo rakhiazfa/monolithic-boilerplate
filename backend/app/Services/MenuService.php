@@ -69,7 +69,7 @@ class MenuService
                 'parent_id' => $menu->parent_id,
                 'children' => [],
             ];
-        });
+        })->sortBy('order');
 
         return $this->getChildren($menus, null);
     }

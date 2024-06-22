@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Resources\UserResource;
+use App\Models\Menu;
 use App\Models\Role;
 use App\Models\User;
 use App\Services\MenuService;
@@ -66,9 +67,13 @@ class AuthController extends Controller
     public function userMenus(MenuService $menuService)
     {
         $user = auth()->user();
-        $user->load('roles.menus');
+        $isSuperAdmin = $user->hasRole('Super Admin');
 
-        $menus = collect($user->roles)->map(function (Role $role) {
+        if (!$isSuperAdmin) {
+            $user->load('roles.menus');
+        }
+
+        $menus = $isSuperAdmin ? Menu::all() : collect($user->roles)->map(function (Role $role) {
             return $role->menus;
         })->collapse();
 
