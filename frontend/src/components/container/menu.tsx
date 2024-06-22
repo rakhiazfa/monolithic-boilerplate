@@ -26,7 +26,7 @@ const Menu = ({ menus, menuTitle, isSubMenu = false }: MenuProps) => {
                         {Array.isArray(children) && children.length > 0 ? (
                             <DropdownMenu.Root open={open} onOpenChange={handleOpenChange}>
                                 <DropdownMenu.Trigger>
-                                    <button className="flex items-center gap-3 font-medium tracking-wider">
+                                    <button className="flex items-center gap-3 text-sm font-medium tracking-wider">
                                         {name}
                                         <DropdownMenu.TriggerIcon />
                                     </button>
@@ -55,7 +55,7 @@ const Menu = ({ menus, menuTitle, isSubMenu = false }: MenuProps) => {
                             <Link
                                 href={href ?? '/'}
                                 onClick={() => handleOpenChange(false)}
-                                className="w-full h-full flex items-center text-white hover:no-underline"
+                                className="w-full h-full flex items-center text-white font-medium tracking-wider hover:no-underline"
                             >
                                 {name}
                             </Link>
