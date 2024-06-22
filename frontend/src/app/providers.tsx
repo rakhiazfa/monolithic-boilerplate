@@ -10,7 +10,7 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
     return (
         <Provider store={store}>
             <NextUIProvider>
-                <Theme>{children}</Theme>
+                <Theme className="!bg-light">{children}</Theme>
             </NextUIProvider>
         </Provider>
     );
