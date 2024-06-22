@@ -17,6 +17,7 @@
     "@nextui-org/divider": "^2.0.28",
     "@nextui-org/dropdown": "^2.1.26",
     "@nextui-org/input": "^2.2.2",
+    "@nextui-org/skeleton": "^2.0.29",
     "@nextui-org/system": "^2.2.2",
     "@nextui-org/theme": "^2.2.6",
     "@radix-ui/themes": "^3.1.0",
