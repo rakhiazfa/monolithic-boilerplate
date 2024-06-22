@@ -4,11 +4,11 @@ import { DropdownMenu } from '@radix-ui/themes';
 import Link from 'next/link';
 import { useState } from 'react';
 
-export type IMenu = {
+export interface IMenu {
     name: string;
     href?: string;
     children?: IMenu[];
-};
+}
 
 type MenuProps = {
     menus: IMenu[];

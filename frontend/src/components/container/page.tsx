@@ -10,7 +10,7 @@ type PageProps = {
 const Page = ({ title, children }: PageProps) => {
     useEffect(() => {
         document.title = `${title} - ${process.env.NEXT_PUBLIC_APP_NAME}`;
-    }, []);
+    }, [title]);
 
     return children;
 };

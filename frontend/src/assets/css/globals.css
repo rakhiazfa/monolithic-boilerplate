@@ -16,7 +16,7 @@
 	}
 
 	a {
-		@apply text-sm text-blue-500 hover:underline;
+		@apply text-sm text-inherit;
 	}
 }
 
