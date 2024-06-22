@@ -24,4 +24,8 @@
 	.app-container {
 		@apply w-full md:max-w-[1024px] lg:max-w-[1240px] mx-auto px-5 md:px-[3.25rem];
 	}
+
+	.app-page-title {
+		@apply text-2xl font-bold tracking-wider;
+	}
 }
