@@ -8,6 +8,7 @@ import { AppDispatch } from '@/store';
 import { Button } from '@nextui-org/button';
 import { Card, CardBody, CardHeader } from '@nextui-org/card';
 import { Divider } from '@nextui-org/divider';
+import { Skeleton } from '@nextui-org/skeleton';
 import { Table } from '@radix-ui/themes';
 import Link from 'next/link';
 import { useEffect } from 'react';
@@ -51,26 +52,38 @@ export default function Menus() {
                                     </Table.Row>
                                 </Table.Header>
                                 <Table.Body>
-                                    {data?.menus?.map(({ name, href, order, parent }, index) => (
-                                        <Table.Row key={index}>
-                                            <Table.RowHeaderCell>{name}</Table.RowHeaderCell>
-                                            <Table.Cell>{href ?? '-'}</Table.Cell>
-                                            <Table.Cell>{order ?? 1}</Table.Cell>
-                                            <Table.Cell>
-                                                {parent ? (
-                                                    <Link
-                                                        href={`/iam/menus/${parent.id}`}
-                                                        className="text-blue-500 hover:underline"
-                                                    >
-                                                        {parent.name}
-                                                    </Link>
-                                                ) : (
-                                                    '-'
-                                                )}
-                                            </Table.Cell>
-                                            <Table.Cell></Table.Cell>
-                                        </Table.Row>
-                                    ))}
+                                    {!loading
+                                        ? data?.menus?.map(({ id, name, href, order, parent }, index) => (
+                                              <Table.Row key={index}>
+                                                  <Table.RowHeaderCell>{name}</Table.RowHeaderCell>
+                                                  <Table.Cell>{href ?? '-'}</Table.Cell>
+                                                  <Table.Cell>{order ?? 1}</Table.Cell>
+                                                  <Table.Cell>
+                                                      {parent ? (
+                                                          <Link
+                                                              href={`/iam/menus/${parent.id}`}
+                                                              className="text-blue-500 hover:underline"
+                                                          >
+                                                              {parent.name}
+                                                          </Link>
+                                                      ) : (
+                                                          '-'
+                                                      )}
+                                                  </Table.Cell>
+                                                  <Table.Cell className="flex items-center gap-5">
+                                                      <Link href={`/iam/menus/${id}`} className="text-blue-500 hover:underline">
+                                                          Details
+                                                      </Link>
+                                                      <Link
+                                                          href={`/iam/menus/${id}/edit`}
+                                                          className="text-blue-500 hover:underline"
+                                                      >
+                                                          Edit
+                                                      </Link>
+                                                  </Table.Cell>
+                                              </Table.Row>
+                                          ))
+                                        : [...Array(5)].map((_, index) => <MenuRowSkeleton key={index} />)}
                                 </Table.Body>
                             </Table.Root>
                         </CardBody>
@@ -80,3 +93,25 @@ export default function Menus() {
         </Page>
     );
 }
+
+const MenuRowSkeleton = () => {
+    return (
+        <Table.Row>
+            <Table.Cell>
+                <Skeleton className="w-16 h-5 rounded-lg" />
+            </Table.Cell>
+            <Table.Cell>
+                <Skeleton className="w-20 h-5 rounded-lg" />
+            </Table.Cell>
+            <Table.Cell>
+                <Skeleton className="w-10 h-5 rounded-lg" />
+            </Table.Cell>
+            <Table.Cell>
+                <Skeleton className="w-10 h-5 rounded-lg" />
+            </Table.Cell>
+            <Table.Cell>
+                <Skeleton className="w-10 h-5 rounded-lg" />
+            </Table.Cell>
+        </Table.Row>
+    );
+};

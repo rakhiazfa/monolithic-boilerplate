@@ -1,27 +1,32 @@
 'use client';
 
-import { createMenu, searchMenus } from '@/services/menu/menu.actions';
+import { searchMenus, updateMenu } from '@/services/menu/menu.actions';
 import { menuSelector, resetErrors } from '@/services/menu/menu.slice';
-import { CreateMenuPayload, Menu } from '@/services/menu/menu.types';
+import { Menu, UpdateMenuPayload } from '@/services/menu/menu.types';
 import { AppDispatch } from '@/store';
 import { Autocomplete, AutocompleteItem } from '@nextui-org/autocomplete';
 import { Button } from '@nextui-org/button';
 import { Input } from '@nextui-org/input';
 import { useRouter } from 'next/navigation';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 
-const Form = () => {
+type FormProps = {
+    menu: Menu;
+};
+
+const Form = ({ menu }: FormProps) => {
     const { menuOptions, errors, loading } = useSelector(menuSelector);
     const dispatch = useDispatch<AppDispatch>();
     const router = useRouter();
 
-    const { register, setValue, watch, handleSubmit, reset } = useForm<CreateMenuPayload>({
+    const { register, setValue, watch, handleSubmit, reset } = useForm<UpdateMenuPayload>({
         defaultValues: {
-            name: '',
-            href: null,
-            order: 1,
-            parent_id: null
+            name: menu.name,
+            href: menu.href,
+            order: menu.order,
+            parent_id: menu.parent_id
         }
     });
     const watchedFields = watch();
@@ -34,8 +39,13 @@ const Form = () => {
         );
     };
 
-    const onSubmit = (payload: CreateMenuPayload) => {
-        dispatch(createMenu(payload))
+    const onSubmit = (payload: UpdateMenuPayload) => {
+        dispatch(
+            updateMenu({
+                payload,
+                id: menu.id
+            })
+        )
             .unwrap()
             .then(() => {
                 reset();
@@ -60,6 +70,7 @@ const Form = () => {
             <Autocomplete
                 label="Parent Menu"
                 placeholder="Select a parent menu"
+                defaultSelectedKey={menu.parent_id?.toString()}
                 items={menuOptions ?? []}
                 onInputChange={handleSearchMenus}
                 onSelectionChange={(id) => (id ? setValue('parent_id', +id.toString()) : null)}

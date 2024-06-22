@@ -1,14 +1,9 @@
 'use client';
 
+import { Menu as IMenu } from '@/services/menu/menu.types';
 import { DropdownMenu } from '@radix-ui/themes';
 import Link from 'next/link';
 import { useState } from 'react';
-
-export interface IMenu {
-    name: string;
-    href?: string;
-    children?: IMenu[];
-}
 
 type MenuProps = {
     menus: IMenu[];
