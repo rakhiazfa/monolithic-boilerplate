@@ -36,7 +36,7 @@ export default function SignIn() {
         return () => {
             dispatch(resetErrors());
         };
-    }, []);
+    }, [dispatch]);
 
     return (
         <Page title="Sign In">
@@ -65,13 +65,17 @@ export default function SignIn() {
                                 type="submit"
                                 color="primary"
                                 isDisabled={!watchedFields.email || !watchedFields.password || loading}
+                                isLoading={loading}
                             >
                                 Sign In
                             </Button>
                         </form>
                         <div className="text-center border-t pt-7 mt-7">
                             <p>
-                                Don't have an account? <Link href="/auth/sign-up">Sign Up</Link>
+                                Do not have an account?{' '}
+                                <Link href="/auth/sign-up" className="text-blue-500 hover:underline">
+                                    Sign Up
+                                </Link>
                             </p>
                         </div>
                     </div>

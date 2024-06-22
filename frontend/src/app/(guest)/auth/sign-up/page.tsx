@@ -36,7 +36,7 @@ export default function SignUp() {
         return () => {
             dispatch(resetErrors());
         };
-    }, []);
+    }, [dispatch]);
 
     return (
         <Page title="Sign Up">
@@ -80,6 +80,7 @@ export default function SignUp() {
                                         !watchedFields.password_confirmation ||
                                         loading
                                     }
+                                    isLoading={loading}
                                 >
                                     Sign Up
                                 </Button>
@@ -87,7 +88,10 @@ export default function SignUp() {
                         </form>
                         <div className="text-center border-t pt-7 mt-7">
                             <p>
-                                Already have an account? <Link href="/auth/sign-in">Sign In</Link>
+                                Already have an account?{' '}
+                                <Link href="/auth/sign-in" className="text-blue-500 hover:underline">
+                                    Sign In
+                                </Link>
                             </p>
                         </div>
                     </div>
