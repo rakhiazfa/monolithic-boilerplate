@@ -1,13 +1,13 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { SignInPayload, SignUpPayload } from './auth.types';
-import AuthService from './auth.service';
 import { resetErrors } from './auth.slice';
+import api from '@/endpoints/api';
 
 export const signin = createAsyncThunk('auth/signin', async (payload: SignInPayload, { rejectWithValue, dispatch }) => {
     try {
         dispatch(resetErrors());
 
-        const data = await AuthService.signin(payload);
+        const { data } = await api.post(`/auth/login`, payload);
 
         return data;
     } catch (error: any) {
@@ -19,7 +19,7 @@ export const signup = createAsyncThunk('auth/signup', async (payload: SignUpPayl
     try {
         dispatch(resetErrors());
 
-        const data = await AuthService.signup(payload);
+        const { data } = await api.post(`/auth/register`, payload);
 
         return data;
     } catch (error: any) {
@@ -31,7 +31,7 @@ export const signout = createAsyncThunk('auth/signout', async (_, { rejectWithVa
     try {
         dispatch(resetErrors());
 
-        const data = await AuthService.signout();
+        const { data } = await api.post(`/auth/logout`);
 
         return data;
     } catch (error: any) {
@@ -43,7 +43,7 @@ export const fetchAuthUser = createAsyncThunk('auth/user', async (_, { rejectWit
     try {
         dispatch(resetErrors());
 
-        const data = await AuthService.fetchAuthUser();
+        const { data } = await api.get(`/auth/user`);
 
         return data;
     } catch (error: any) {
@@ -55,7 +55,7 @@ export const fetchAuthUserMenus = createAsyncThunk('auth/user/menus', async (_, 
     try {
         dispatch(resetErrors());
 
-        const data = await AuthService.fetchAuthUserMenus();
+        const { data } = await api.get(`/auth/user/menus`);
 
         return data;
     } catch (error: any) {

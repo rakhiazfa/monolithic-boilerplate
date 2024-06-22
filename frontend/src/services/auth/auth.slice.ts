@@ -1,9 +1,9 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import Cookies from 'js-cookie';
 import { AuthErrors, AuthState } from './auth.types';
-import { fetchAuthUser, signin, signout, signup } from './auth.actions';
+import { fetchAuthUser, fetchAuthUserMenus, signin, signout, signup } from './auth.actions';
 import { AppState } from '@/store';
-import { IMenu } from '@/components/container/menu';
+import { Menu } from '../menu/menu.types';
 
 const initialState = (): AuthState => ({
     user: null,
@@ -15,7 +15,7 @@ const authSlice = createSlice({
     name: 'auth',
     initialState: initialState(),
     reducers: {
-        setUserMenus(state, { payload }: PayloadAction<IMenu[]>) {
+        setUserMenus(state, { payload }: PayloadAction<Menu[]>) {
             state.user!.menus = payload;
         },
         resetErrors(state, { payload }: PayloadAction<keyof AuthErrors | undefined>) {
@@ -66,6 +66,10 @@ const authSlice = createSlice({
 
         builder.addCase(fetchAuthUser.fulfilled, (state, { payload }) => {
             state.user = payload.user;
+        });
+
+        builder.addCase(fetchAuthUserMenus.fulfilled, (state, { payload }) => {
+            state.user!.menus = payload.menus;
         });
     }
 });

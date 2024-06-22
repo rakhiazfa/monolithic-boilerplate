@@ -1,4 +1,4 @@
-import { IMenu } from '@/components/container/menu';
+import { Menu } from '../menu/menu.types';
 
 export type SignInPayload = {
     email: string;
@@ -17,14 +17,10 @@ export type User = {
     name: string;
     email: string;
     email_verified_at: Date;
-    menus?: IMenu[];
+    menus?: Menu[];
 };
 
-export type AuthErrors = {
-    name?: string | string[];
-    email?: string | string[];
-    password?: string | string[];
-};
+export interface AuthErrors extends Partial<SignInPayload & SignUpPayload> {}
 
 export type AuthState = {
     user: User | null;
