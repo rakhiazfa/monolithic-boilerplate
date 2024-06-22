@@ -25,8 +25,11 @@ class MenuResource extends JsonResource
             'href' => $this->href,
             'order' => $this->order,
             'parent_id' => $this->parent_id,
+            'parent' => $this->whenLoaded('parent', function () {
+                return new MenuResource($this->parent);
+            }),
             'children' => $this->whenLoaded('children', function () {
-                return $this->children;
+                return new MenuCollection($this->children);
             }),
         ];
     }

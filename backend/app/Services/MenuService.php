@@ -14,6 +14,7 @@ class MenuService
     public function findAll(): LengthAwarePaginator
     {
         $menus = QueryBuilder::for(Menu::class)
+            ->with('parent')
             ->allowedFilters(['name'])
             ->paginate(15);
 
