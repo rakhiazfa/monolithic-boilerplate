@@ -21,6 +21,7 @@ class MenuSeeder extends Seeder
         $menu->children()->saveMany([
             new Menu(['name' => 'Users', 'href' => '/iam/users', 'order' => 1]),
             new Menu(['name' => 'Roles', 'href' => '/iam/roles', 'order' => 2]),
+            new Menu(['name' => 'Menus', 'href' => '/iam/menus', 'order' => 3]),
         ]);
     }
 }
