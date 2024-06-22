@@ -27,6 +27,7 @@ const authSlice = createSlice({
         }
     },
     extraReducers: (builder) => {
+        // Sign In
         builder.addCase(signin.pending, (state) => {
             state.loading = true;
         });
@@ -40,6 +41,7 @@ const authSlice = createSlice({
             Cookies.set('access_token', payload.access_token);
         });
 
+        // Sign Up
         builder.addCase(signup.pending, (state) => {
             state.loading = true;
         });
@@ -51,6 +53,7 @@ const authSlice = createSlice({
             state.loading = false;
         });
 
+        // Sign Out
         builder.addCase(signout.pending, (state) => {
             state.loading = true;
         });
@@ -64,10 +67,12 @@ const authSlice = createSlice({
             Cookies.remove('access_token');
         });
 
+        // Fetch Auth User
         builder.addCase(fetchAuthUser.fulfilled, (state, { payload }) => {
             state.user = payload.user;
         });
 
+        // Fetch Auth User Menus
         builder.addCase(fetchAuthUserMenus.fulfilled, (state, { payload }) => {
             state.user!.menus = payload.menus;
         });
