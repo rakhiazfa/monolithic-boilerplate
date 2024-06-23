@@ -7,11 +7,28 @@ import { useState } from 'react';
 
 type MenuProps = {
     menus: IMenu[];
-    menuTitle?: string;
+};
+
+const Menu = ({ menus }: MenuProps) => {
+    return (
+        <nav className="relative w-full h-[50px] flex items-center bg-blue-500 text-white shadow-md">
+            <div className="app-container flex items-center gap-5">
+                {menus.map(({ name, href, children }, index) => (
+                    <MenuItem key={index} name={name} href={href} children={children} />
+                ))}
+            </div>
+        </nav>
+    );
+};
+
+type MenuItemProps = {
+    name: string;
+    href?: string;
+    children?: IMenu[];
     isSubMenu?: boolean;
 };
 
-const Menu = ({ menus, menuTitle, isSubMenu = false }: MenuProps) => {
+const MenuItem = ({ name, href, children, isSubMenu }: MenuItemProps) => {
     const [open, setOpen] = useState<boolean>(false);
 
     const handleOpenChange = (open: boolean) => {
@@ -19,59 +36,53 @@ const Menu = ({ menus, menuTitle, isSubMenu = false }: MenuProps) => {
     };
 
     return !isSubMenu ? (
-        <nav className="relative w-full h-[50px] flex items-center bg-blue-500 text-white shadow-md">
-            <div className="app-container flex items-center gap-5">
-                {menus.map(({ name, href, children }, index) => (
-                    <div key={index}>
-                        {Array.isArray(children) && children.length > 0 ? (
-                            <DropdownMenu.Root open={open} onOpenChange={handleOpenChange}>
-                                <DropdownMenu.Trigger>
-                                    <button className="flex items-center gap-3 text-sm font-medium tracking-wider">
-                                        {name}
-                                        <DropdownMenu.TriggerIcon />
-                                    </button>
-                                </DropdownMenu.Trigger>
-                                <DropdownMenu.Content className="min-w-[175px]">
-                                    {children.map(({ name, href, children }, index) => (
-                                        <div key={index}>
-                                            {Array.isArray(children) && children.length > 0 ? (
-                                                <Menu menus={children} menuTitle={name} isSubMenu={true} />
-                                            ) : (
-                                                <DropdownMenu.Item>
-                                                    <Link
-                                                        href={href ?? '/'}
-                                                        onClick={() => handleOpenChange(false)}
-                                                        className="w-full h-full flex items-center text-inherit hover:no-underline"
-                                                    >
-                                                        {name}
-                                                    </Link>
-                                                </DropdownMenu.Item>
-                                            )}
-                                        </div>
-                                    ))}
-                                </DropdownMenu.Content>
-                            </DropdownMenu.Root>
-                        ) : (
-                            <Link
-                                href={href ?? '/'}
-                                onClick={() => handleOpenChange(false)}
-                                className="w-full h-full flex items-center text-white font-medium tracking-wider hover:no-underline"
-                            >
-                                {name}
-                            </Link>
-                        )}
-                    </div>
-                ))}
-            </div>
-        </nav>
+        <div>
+            {Array.isArray(children) && children.length > 0 ? (
+                <DropdownMenu.Root open={open} onOpenChange={handleOpenChange}>
+                    <DropdownMenu.Trigger>
+                        <button className="flex items-center gap-3 text-sm font-medium tracking-wider">
+                            {name}
+                            <DropdownMenu.TriggerIcon />
+                        </button>
+                    </DropdownMenu.Trigger>
+                    <DropdownMenu.Content className="min-w-[175px]">
+                        {children.map(({ name, href, children }, index) => (
+                            <div key={index}>
+                                {Array.isArray(children) && children.length > 0 ? (
+                                    <MenuItem name={name} href={href} children={children} isSubMenu={true} />
+                                ) : (
+                                    <DropdownMenu.Item>
+                                        <Link
+                                            href={href ?? '/'}
+                                            onClick={() => handleOpenChange(false)}
+                                            className="w-full h-full flex items-center text-inherit hover:no-underline"
+                                        >
+                                            {name}
+                                        </Link>
+                                    </DropdownMenu.Item>
+                                )}
+                            </div>
+                        ))}
+                    </DropdownMenu.Content>
+                </DropdownMenu.Root>
+            ) : (
+                <Link
+                    href={href ?? '/'}
+                    onClick={() => handleOpenChange(false)}
+                    className="w-full h-full flex items-center text-white font-medium tracking-wider hover:no-underline"
+                >
+                    {name}
+                </Link>
+            )}
+        </div>
     ) : (
         <DropdownMenu.Sub>
-            <DropdownMenu.SubTrigger>{menuTitle}</DropdownMenu.SubTrigger>
-            <DropdownMenu.SubContent>
-                {menus.map(({ name, href, children }, index) => (
+            <DropdownMenu.SubTrigger>{name}</DropdownMenu.SubTrigger>
+            <DropdownMenu.SubContent className="min-w-[175px]">
+                {children?.map(({ name, href, children }, index) => (
                     <div key={index}>
                         {Array.isArray(children) && children.length > 0 ? (
-                            <Menu menus={children} menuTitle={name} isSubMenu={true} />
+                            <MenuItem name={name} href={href} children={children} isSubMenu={true} />
                         ) : (
                             <DropdownMenu.Item>
                                 <Link
